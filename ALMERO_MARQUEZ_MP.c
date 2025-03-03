@@ -4,6 +4,28 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+// CODING CONVENTIONS 
+/*
+    - put space between tokens (e.g. x = 1, NOT x=1)
+    - pointer data types will be written as: char*, int*; NOT char *, int *
+    - follow normal CCPORG2 code block format
+    - typedef all structures 
+        i.e:
+            typedef struct
+            {
+                data...
+            } <alias>;
+
+*/
+
+// INSTRUCTIONS FOR ALLOCATION
+/*
+    max number of entries: 150
+    language and translation strings: max 20 characters
+    language-translation pair: max 10 per entry 
+*/
+
+
 // TASK 1: Add entry 
 
 /* TODO:
