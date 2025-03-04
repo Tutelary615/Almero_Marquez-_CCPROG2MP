@@ -25,6 +25,28 @@
     language-translation pair: max 10 per entry 
 */
 
+bool getInteger(int* num)
+{
+    char firstCharacterEntered;
+    char lastCharacterAfterNum;
+    bool isInputValid = false;
+
+    firstCharacterEntered = getc(stdin);
+
+    if (firstCharacterEntered != '\n')
+    {
+        ungetc(firstCharacterEntered, stdin);
+        scanf("%d", num);
+        lastCharacterAfterNum = getc(stdin);
+    }
+
+    if (lastCharacterAfterNum == '\n')
+    {
+        isInputValid = true;
+    }
+    fflush(stdin);
+    return isInputValid;
+}
 
 // TASK 1: Add entry 
 
