@@ -18,6 +18,7 @@ typedef struct
     - put space between tokens (e.g. x = 1, NOT x=1)
     - pointer data types will be written as: char*, int*; NOT char *, int *
     - follow normal CCPORG2 code block format
+    - variable naming: NO HUNGARIAN NOTATION, use camel case (first letter always lowercase)
     - typedef all structures 
         i.e:
             typedef struct
