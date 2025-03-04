@@ -4,6 +4,15 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+typedef char string20[21];
+
+typedef struct 
+{
+    string20 language;
+    string20 translation;
+
+} languageTranslationPair;
+
 // CODING CONVENTIONS 
 /*
     - put space between tokens (e.g. x = 1, NOT x=1)
