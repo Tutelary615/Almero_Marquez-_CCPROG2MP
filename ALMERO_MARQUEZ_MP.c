@@ -3,15 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
-
-typedef char string20[21];
-
-typedef struct 
-{
-    string20 language;
-    string20 translation;
-
-} languageTranslationPair;
+#include "MP_HEADER.h"
 
 // CODING CONVENTIONS 
 /*
