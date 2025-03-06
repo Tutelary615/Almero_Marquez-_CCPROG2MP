@@ -50,6 +50,15 @@ bool getInteger(int* num)
     return isInputValid;
 }
 
+void printMenu(string20 choices[], int numberOfChoices)
+{
+    int i;
+    for (i = 0; i < numberOfChoices; i++)
+    {
+        printf("%d - %s\n", (i + 1), choices[i]);
+    }
+}
+
 // TASK 1: Add entry 
 
 /* TODO:
