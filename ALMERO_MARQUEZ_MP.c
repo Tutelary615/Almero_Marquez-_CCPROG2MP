@@ -225,7 +225,7 @@ addEntry(entry* E)
             printMenu(options, 2);
             do
             {
-                isChoiceValid = getInteger(&choice);
+                isChoiceValid = getInteger(&choice);\
             } while (!isChoiceValid);
         }
     } while (E->pairCount < 10 && choice == 1);
