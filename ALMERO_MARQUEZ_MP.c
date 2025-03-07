@@ -66,7 +66,7 @@ validateInteger(bool isInputValid, int lowerBound, int upperBound, int input)
 }
 
 void 
-printMenu(string50 choices[], 
+printMenu(char choices[], 
 		  int numberOfChoices)
 {
     int i;
@@ -158,24 +158,78 @@ manageDataMenu(int entryCount)
 */
 
 void
-getPair()
+getPair(string20 tempLanguage, string20 tempTranslation, char* characterAfterLanguage, char* characterAfterTranslation)
 {
-	string20 language;
-	string20 translation;
 	
 	printf("Enter language: ");
-	fgets(language, 20, stdin);
+	fgets(tempLanguage, 20, stdin);
+    if (strlen(tempLanguage) == 20)
+    {
+        *characterAfterLanguage = getc(stdin);
+    }
+    fflush(stdin);
 	
 	printf("Enter translation: ");
-	fgets(translation, 20, stdin);
-	
-	
+	fgets(tempTranslation, 20, stdin);
+    if (strlen(tempLanguage) == 20)
+    {
+        *characterAfterTranslation = getc(stdin);
+    }
+    fflush(stdin);	
+}
+
+bool 
+isPairValid(string20 tempLanguage, string20 tempTranslation, char characterAfterLanguage, char characterAfterTranslation)
+{
+    bool isValid = true;
+    if (characterAfterLanguage != '\n' || characterAfterTranslation != '\n')
+    {
+        printf(ERRORFORMATSTRING, "Input(s) invalid. Try again\n.");
+        isValid = false;
+    }
+    return isValid;
+}
+
+void getAndValidatePair(string20 language, string20 translation)
+{
+    string20 tempLanguage;
+    string20 tempTranslation;
+    char characterAfterLanguage = '\n';
+    char characterAfterTranslation = '\n';
+    do
+    {
+        getPair(tempLanguage, tempTranslation, &characterAfterLanguage, &characterAfterTranslation);
+        
+    } while (!isPairValid(tempLanguage, tempTranslation, characterAfterLanguage, characterAfterTranslation));
+    strcpy(language, tempLanguage);
+    strcpy(translation, tempTranslation);
 }
 
 void
-addEntry(entry E)
-{
+addEntry(entry* E)
+{    
+    bool addAnotherEntry;
+    string20 options[2] = {"Yes", "No"};
+    int choice;
+    int isChoiceValid;
 
+
+    do
+    {
+        getAndValidatePair(E->pairs[E->pairCount].language,E->pairs[E->pairCount].translation);
+        E->pairCount++;
+        if (E->pairCount < 10)
+        {
+            // for refactor
+            printf("Add another language-translation pair?\n");
+            printMenu(options, 2);
+            do
+            {
+                isChoiceValid = getInteger(&choice);
+            } while (!isChoiceValid);
+        }
+    } while (E->pairCount < 10 && choice == 1);
+    
 }
 
 // TASK 2: Add translation
