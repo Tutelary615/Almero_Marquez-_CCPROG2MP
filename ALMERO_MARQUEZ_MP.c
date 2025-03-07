@@ -65,6 +65,20 @@ validateInteger(bool isInputValid, int lowerBound, int upperBound, int input)
 	return isValid;
 }
 
+int 
+getAndValidateIntegerInput(int lowerBound, int upperBound)
+{
+    int choice;
+    bool isChoiceValid;
+    do
+	{
+		isChoiceValid = getInteger(&choice);
+				
+	} while (!validateInteger(isChoiceValid, 1, upperBound, choice));
+	return choice;
+}
+
+
 void 
 printMenu(string50 choices[], 
 		  int numberOfChoices)
@@ -91,8 +105,6 @@ mainMenu()
 		isChoiceValid = getInteger(&choice);
 				
 	} while (!validateInteger(isChoiceValid, 1, 3, choice));
-	
-	
 	return choice;
 }
 
@@ -103,8 +115,6 @@ manageDataMenu(int entryCount)
                             "Display All Entries", "Search by Word", "Search By Translation", "Export Data", "Exit"};
     int choice;
     int upperBound;
-    bool isChoiceValid;
-
     if (entryCount > 0)
     {
         printMenu(options, 10);
@@ -115,14 +125,9 @@ manageDataMenu(int entryCount)
         printMenu(options, 2);
         upperBound = 2;
     }
-
-    do
-	{
-		printf("Select an option from the menu above: ");
-		isChoiceValid = getInteger(&choice);
-				
-	} while (!validateInteger(isChoiceValid, 1, upperBound, choice));
-	return choice;
+    printf("Select and option from the menu above\n");
+    choice = getAndValidateIntegerInput(1, upperBound);
+    return choice;
 }
 
 
@@ -211,8 +216,6 @@ addEntry(entry* E)
     string50 options[2] = {"Yes", "No"};
     int choice;
     int isChoiceValid;
-
-
     do
     {
         getAndValidatePair(E->pairs[E->pairCount].language,E->pairs[E->pairCount].translation);
@@ -222,11 +225,7 @@ addEntry(entry* E)
             // for refactor
             printf("Add another language-translation pair?\n");
             printMenu(options, 2);
-            do
-            {
-
-                isChoiceValid = getInteger(&choice);
-            } while (!validateInteger(isChoiceValid, 1, 2, choice));
+            getAndValidateIntegerInput(1, 2);
         }
     } while (E->pairCount < 10 && choice == 1);
     
