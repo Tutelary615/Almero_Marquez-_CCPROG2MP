@@ -27,7 +27,8 @@
     language-translation pair: max 10 per entry 
 */
 
-bool getInteger(int* num)
+bool 
+getInteger(int* num)
 {
     char firstCharacterEntered;
     char lastCharacterAfterNum;
@@ -50,13 +51,49 @@ bool getInteger(int* num)
     return isInputValid;
 }
 
-void printMenu(string20 choices[], int numberOfChoices)
+bool
+validateInteger(bool isInputValid, int lowerBound, int upperBound, int input)
+{
+	bool isValid = true;
+
+	if (!isInputValid || input < lowerBound || input > upperBound)
+	{
+		printf(ERRORFORMATSTRING, "Entered number is invalid, try again\n");
+		isValid = false;
+	}
+		
+	return isValid;
+}
+
+void 
+printMenu(string20 choices[], 
+		  int numberOfChoices)
 {
     int i;
     for (i = 0; i < numberOfChoices; i++)
     {
         printf("%d - %s\n", (i + 1), choices[i]);
     }
+}
+
+int
+mainMenu()
+{
+	int choice;
+	bool isChoiceValid;
+	string20 options[3] = {"Manage Data", "Translate Menu", "Exit"};
+	
+	printMenu(options, 3);
+	
+	do
+	{
+		printf("Select an option from the menu above: ");
+		isChoiceValid = getInteger(&choice);
+				
+	} while (!validateInteger(isChoiceValid, 1, 3, choice));
+	
+	
+	return choice;
 }
 
 // TASK 1: Add entry 
@@ -219,7 +256,7 @@ void printMenu(string20 choices[], int numberOfChoices)
 
 */
 
-// FUNCTION 6: Search translation
+// FUNCTION 7: Search translation
 
 /* PSUEDOCODE:
     - ask user for language translation pair to search
