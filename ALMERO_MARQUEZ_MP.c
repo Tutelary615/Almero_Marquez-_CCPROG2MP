@@ -66,7 +66,7 @@ validateInteger(bool isInputValid, int lowerBound, int upperBound, int input)
 }
 
 void 
-printMenu(char choices[], 
+printMenu(string50 choices[], 
 		  int numberOfChoices)
 {
     int i;
@@ -208,8 +208,7 @@ void getAndValidatePair(string20 language, string20 translation)
 void
 addEntry(entry* E)
 {    
-    bool addAnotherEntry;
-    string20 options[2] = {"Yes", "No"};
+    string50 options[2] = {"Yes", "No"};
     int choice;
     int isChoiceValid;
 
@@ -225,8 +224,9 @@ addEntry(entry* E)
             printMenu(options, 2);
             do
             {
-                isChoiceValid = getInteger(&choice);\
-            } while (!isChoiceValid);
+
+                isChoiceValid = getInteger(&choice);
+            } while (!validateInteger(isChoiceValid, 1, 2, choice));
         }
     } while (E->pairCount < 10 && choice == 1);
     
