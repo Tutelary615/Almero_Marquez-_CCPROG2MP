@@ -96,6 +96,35 @@ mainMenu()
 	return choice;
 }
 
+int 
+manageDataMenu(int entryCount)
+{
+    string20 options[10] = {};
+    int choice;
+    int upperBound;
+    bool isChoiceValid;
+
+    if (entryCount > 0)
+    {
+        printMenu(options, 10);
+        upperBound = 10;
+    }
+    else
+    {
+        printMenu(options, 1);
+        upperBound = 1;
+    }
+
+    do
+	{
+		printf("Select an option from the menu above: ");
+		isChoiceValid = getInteger(&choice);
+				
+	} while (!validateInteger(isChoiceValid, 1, upperBound, choice));
+	return choice;
+}
+
+
 // TASK 1: Add entry 
 
 /* TODO:
