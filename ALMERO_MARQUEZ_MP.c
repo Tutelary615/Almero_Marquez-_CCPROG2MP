@@ -157,6 +157,27 @@ manageDataMenu(int entryCount)
                 else: ask for input
 */
 
+void
+getPair()
+{
+	string20 language;
+	string20 translation;
+	
+	printf("Enter language: ");
+	fgets(language, 20, stdin);
+	
+	printf("Enter translation: ");
+	fgets(translation, 20, stdin);
+	
+	
+}
+
+void
+addEntry(entry E)
+{
+
+}
+
 // TASK 2: Add translation
 
 /* TODO:

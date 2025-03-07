@@ -3,9 +3,13 @@
 typedef char string20[21];
 typedef char string50[51];
 
-typedef struct 
-{
+typedef struct {
     string20 language;
     string20 translation;
 
 } languageTranslationPair;
+
+typedef struct {
+	languageTranslationPair pairs[10];
+	int pairCount;
+} entry;
