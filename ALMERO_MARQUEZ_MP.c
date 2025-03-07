@@ -66,7 +66,7 @@ validateInteger(bool isInputValid, int lowerBound, int upperBound, int input)
 }
 
 void 
-printMenu(string20 choices[], 
+printMenu(string50 choices[], 
 		  int numberOfChoices)
 {
     int i;
@@ -81,7 +81,7 @@ mainMenu()
 {
 	int choice;
 	bool isChoiceValid;
-	string20 options[3] = {"Manage Data", "Translate Menu", "Exit"};
+	string50 options[3] = {"Manage Data", "Translate Menu", "Exit"};
 	
 	printMenu(options, 3);
 	
@@ -99,7 +99,8 @@ mainMenu()
 int 
 manageDataMenu(int entryCount)
 {
-    string20 options[10] = {};
+    string50 options[10] = {"Add Entry", "Import Data", "Add Translations", "Delete Entry", "Delete Translation",
+                            "Display All Entries", "Search by Word", "Search By Translation", "Export Data", "Exit"};
     int choice;
     int upperBound;
     bool isChoiceValid;
@@ -111,8 +112,8 @@ manageDataMenu(int entryCount)
     }
     else
     {
-        printMenu(options, 1);
-        upperBound = 1;
+        printMenu(options, 2);
+        upperBound = 2;
     }
 
     do
