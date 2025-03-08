@@ -66,7 +66,7 @@ validateInteger(bool isInputValid, int lowerBound, int upperBound, int input)
 }
 
 int 
-getAndValidateIntegerInput(int lowerBound, int upperBound)
+getAndValidateMenuInput(int lowerBound, int upperBound)
 {
     int choice;
     bool isChoiceValid;
@@ -126,7 +126,7 @@ manageDataMenu(int entryCount)
         upperBound = 2;
     }
     printf("Select and option from the menu above\n");
-    choice = getAndValidateIntegerInput(1, upperBound);
+    choice = getAndValidateMenuInput(1, upperBound);
     return choice;
 }
 
@@ -167,7 +167,7 @@ getPair(string20 tempLanguage, string20 tempTranslation, char* characterAfterLan
 {
 	
 	printf("Enter language: ");
-	fgets(tempLanguage, 20, stdin);
+	fgets(tempLanguage, 21, stdin);
     if (strlen(tempLanguage) == 20)
     {
         *characterAfterLanguage = getc(stdin);
@@ -175,8 +175,8 @@ getPair(string20 tempLanguage, string20 tempTranslation, char* characterAfterLan
     fflush(stdin);
 	
 	printf("Enter translation: ");
-	fgets(tempTranslation, 20, stdin);
-    if (strlen(tempLanguage) == 20)
+	fgets(tempTranslation, 21, stdin);
+    if (strlen(tempTranslation) == 20)
     {
         *characterAfterTranslation = getc(stdin);
     }
@@ -189,45 +189,64 @@ isPairValid(string20 tempLanguage, string20 tempTranslation, char characterAfter
     bool isValid = true;
     if (characterAfterLanguage != '\n' || characterAfterTranslation != '\n')
     {
-        printf(ERRORFORMATSTRING, "Input(s) invalid. Try again\n.");
+        printf(ERRORFORMATSTRING, "Input(s) invalid. Try again.\n");
         isValid = false;
     }
     return isValid;
 }
 
-void getAndValidatePair(string20 language, string20 translation)
+void formatLanguageOrTranslation(string20 str)
 {
-    string20 tempLanguage;
-    string20 tempTranslation;
-    char characterAfterLanguage = '\n';
-    char characterAfterTranslation = '\n';
-    do
+    int i;
+    int lengthOfString = strlen(str);
+    if (lengthOfString < 20)
     {
-        getPair(tempLanguage, tempTranslation, &characterAfterLanguage, &characterAfterTranslation);
-        
-    } while (!isPairValid(tempLanguage, tempTranslation, characterAfterLanguage, characterAfterTranslation));
-    strcpy(language, tempLanguage);
-    strcpy(translation, tempTranslation);
+        str[lengthOfString - 1] = '\0';
+        lengthOfString--;
+    }
+    
+    str[0] = toupper(str[0]);
+    for (i = 1; i < lengthOfString; i++)
+    {
+        str[i] = tolower(str[i]);
+    }
 }
+
 
 void
 addEntry(entry* E)
 {    
     string50 options[2] = {"Yes", "No"};
-    int choice;
-    int isChoiceValid;
+    string20 tempLanguage;
+    string20 tempTranslation;
+    int addAnotherPair;
+    char characterAfterLanguage = '\n';
+    char characterAfterTranslation = '\n';
+    E->pairCount = 0;
+    
     do
     {
-        getAndValidatePair(E->pairs[E->pairCount].language,E->pairs[E->pairCount].translation);
-        E->pairCount++;
-        if (E->pairCount < 10)
+        do
         {
-            // for refactor
-            printf("Add another language-translation pair?\n");
-            printMenu(options, 2);
-            getAndValidateIntegerInput(1, 2);
-        }
-    } while (E->pairCount < 10 && choice == 1);
+        getPair(tempLanguage, tempTranslation, &characterAfterLanguage, &characterAfterTranslation);
+
+        } while (!isPairValid(tempLanguage, tempTranslation, characterAfterLanguage, characterAfterTranslation));
+
+        formatLanguageOrTranslation(tempLanguage);
+        formatLanguageOrTranslation(tempTranslation);
+        strcpy(E->pairs[E->pairCount].language, tempLanguage);
+        strcpy(E->pairs[E->pairCount].translation, tempTranslation);
+        E->pairCount++;
+
+        printf("\n");
+        printf("Would you like to add another pair?\n");
+        printMenu(options, 2);
+        printf("Enter number that corresponds to chosen option: ");
+        addAnotherPair  = getAndValidateMenuInput(1, 2);
+    } while (addAnotherPair == 1 && E->pairCount < 10);
+    
+
+
     
 }
 
