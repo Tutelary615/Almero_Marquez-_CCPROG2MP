@@ -236,6 +236,36 @@ sortEntryAlphabeticallyByLanguage(entry* e)
     }
 
 }
+
+int 
+searchForLanguageTranslationPair(entry e, string20 languageKey, string20 translationKey)
+{
+    int i;
+    int indexOfKey = -1;
+    int startIndex = 0;
+    int endIndex = e.pairCount - 1;
+
+    while (strcmp(languageKey, e.pairs[startIndex].language) == 1)
+    {
+        startIndex++;
+    }
+    while (strcmp(languageKey, e.pairs[endIndex].language) == -1)
+    {
+        endIndex--;
+    }
+    for (i = startIndex; i <= endIndex && indexOfKey == -1; i++)
+    {
+        if((strcmp(languageKey, e.pairs[i].language) == 0) && (strcmp(translationKey, e.pairs[i].translation) == 0))
+        {
+            indexOfKey = i;
+        }
+    }
+    return indexOfKey;
+}
+
+
+
+
 // TASK 2: Add translation
 
 /* TODO:
