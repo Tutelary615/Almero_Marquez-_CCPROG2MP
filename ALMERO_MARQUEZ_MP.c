@@ -162,22 +162,41 @@ isLanguageTranslationPairValid(string20 tempLanguage, string20 tempTranslation, 
 }
 
 void 
-formatLanguageOrTranslation(string20 str)
+formatLanguage(string20 language)
 {
     int i;
-    int lengthOfString = strlen(str);
-    if (lengthOfString < 20)
+    int lengthOfLanguage = strlen(language);
+    if (lengthOfLanguage < 20)
     {
-        str[lengthOfString - 1] = '\0';
-        lengthOfString--;
+        language[lengthOfLanguage - 1] = '\0';
+        lengthOfLanguage--;
     }
     
-    str[0] = toupper(str[0]);
-    for (i = 1; i < lengthOfString; i++)
+    language[0] = toupper(language[0]);
+    for (i = 1; i < lengthOfLanguage; i++)
     {
-        str[i] = tolower(str[i]);
+        language[i] = tolower(language[i]);
     }
 }
+
+void 
+formatTranslation(string20 translation)
+{
+    int i;
+    int lengthOfTranslation = strlen(translation);
+    if (lengthOfTranslation < 20)
+    {
+        translation[lengthOfTranslation - 1] = '\0';
+        lengthOfTranslation--;   
+    }
+    for (i = 0; i < lengthOfTranslation; i++)
+    {
+        translation[i] = tolower(translation[i]);
+    }
+
+}
+
+
 
 void
 addEntry(entry* e)
@@ -199,8 +218,8 @@ addEntry(entry* e)
 
         } while (!isLanguageTranslationPairValid(tempLanguage, tempTranslation, 
                               characterAfterLanguage, characterAfterTranslation));
-        formatLanguageOrTranslation(tempLanguage);
-        formatLanguageOrTranslation(tempTranslation);
+        formatLanguage(tempLanguage);
+        formatTranslation(tempTranslation);
         printf("\n");
         if (searchForLanguageTranslationPair(*e, tempLanguage, tempTranslation) == -1)
         {
@@ -271,7 +290,14 @@ searchForLanguageTranslationPair(entry e, string20 languageKey, string20 transla
     return indexOfKey;
 }
 
-
+void printEntry(entry e, FILE* outputFile)
+{
+    int i;
+    for (i = 0; i < e.pairCount; i++)
+    {
+        fprintf(outputFile, "%s: %s\n", e.pairs[i].language, e.pairs[i].translation);
+    }
+}
 
 // TASK 2: Add translation
 

@@ -25,7 +25,8 @@ void getPair(string20 tempLanguage, string20 tempTranslation,
              char* characterAfterLanguage, char* characterAfterTranslation);
 bool isLanguageTranslationPairValid(string20 tempLanguage, string20 tempTranslation, 
                                     char characterAfterLanguage, char characterAfterTranslation);
-void formatLanguageOrTranslation(string20 str);
+void formatLanguage(string20 language);
+void formatTranslation(string20 translation);
 void addEntry(entry* e);
 void sortEntryAlphabeticallyByLanguage(entry* e);
 int searchForLanguageTranslationPair(entry e, string20 languageKey, string20 translationKey);
