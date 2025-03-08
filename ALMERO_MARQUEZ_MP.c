@@ -188,6 +188,7 @@ addEntry(entry* e)
     int addAnotherPair;
     char characterAfterLanguage = '\n';
     char characterAfterTranslation = '\n';
+    bool doesPairAlreadyExist;
     e->pairCount = 0;
     
     do
@@ -198,15 +199,21 @@ addEntry(entry* e)
 
         } while (!isLanguageTranslationPairValid(tempLanguage, tempTranslation, 
                               characterAfterLanguage, characterAfterTranslation));
-
         formatLanguageOrTranslation(tempLanguage);
         formatLanguageOrTranslation(tempTranslation);
-        strcpy(e->pairs[e->pairCount].language, tempLanguage);
-        strcpy(e->pairs[e->pairCount].translation, tempTranslation);
-        e->pairCount++;
+        printf("\n");
+        if (searchForLanguageTranslationPair(*e, tempLanguage, tempTranslation) == -1)
+        {
+            strcpy(e->pairs[e->pairCount].language, tempLanguage);
+            strcpy(e->pairs[e->pairCount].translation, tempTranslation);
+            e->pairCount++;
+        }
+        else
+        {
+            printf(WARNINGFORMATSTRING, "The pair entered already exists in the entry\n");
+        }
         if (e->pairCount < 10)
         {
-            printf("\n");
             printf("Would you like to add another pair?\n");
             printMenu(options, 2);
             printf("Enter number that corresponds to chosen option: ");
@@ -262,7 +269,6 @@ searchForLanguageTranslationPair(entry e, string20 languageKey, string20 transla
     }
     return indexOfKey;
 }
-
 
 
 
