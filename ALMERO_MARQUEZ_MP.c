@@ -52,7 +52,7 @@ getInteger(int* num)
 }
 
 bool
-validateInteger(bool isInputValid, int lowerBound, int upperBound, int input)
+isMenuInputValid(bool isInputValid, int lowerBound, int upperBound, int input)
 {
 	bool isValid = true;
 
@@ -74,14 +74,12 @@ getAndValidateMenuInput(int lowerBound, int upperBound)
 	{
 		isChoiceValid = getInteger(&choice);
 				
-	} while (!validateInteger(isChoiceValid, 1, upperBound, choice));
+	} while (!isMenuInputValid(isChoiceValid, 1, upperBound, choice));
 	return choice;
 }
 
-
 void 
-printMenu(string50 choices[], 
-		  int numberOfChoices)
+printMenu(string50 choices[], int numberOfChoices)
 {
     int i;
     for (i = 0; i < numberOfChoices; i++)
@@ -104,7 +102,7 @@ mainMenu()
 		printf("Select an option from the menu above: ");
 		isChoiceValid = getInteger(&choice);
 				
-	} while (!validateInteger(isChoiceValid, 1, 3, choice));
+	} while (!isMenuInputValid(isChoiceValid, 1, 3, choice));
 	return choice;
 }
 
@@ -130,38 +128,6 @@ manageDataMenu(int entryCount)
     return choice;
 }
 
-
-// TASK 1: Add entry 
-
-/* TODO:
-    - ask user for input
-    - check if pair already exists
-      
-    (Suggested implementation: 
-        - create function that will format the entered string for simplicity of comparison
-        - the existing entry must also be formatted)
-
-
-
-        if pair exists: show information then ask if he would like to make new entry
-            if make entry: ask for input
-            else: go back to menu
-
-        else:
-        - validate input:
-        
-            If valid:
-                -  ask user to confirm
-                - if confirmed: make new entry
-                - else: ask user if he would like to make another input or abort
-            else:
-                - display error message
-                -  ask user if he would like to make another input or abort
-
-                if abort: go back to menu
-                else: ask for input
-*/
-
 void
 getPair(string20 tempLanguage, string20 tempTranslation, char* characterAfterLanguage, char* characterAfterTranslation)
 {
@@ -184,10 +150,10 @@ getPair(string20 tempLanguage, string20 tempTranslation, char* characterAfterLan
 }
 
 bool 
-isPairValid(string20 tempLanguage, string20 tempTranslation, char characterAfterLanguage, char characterAfterTranslation)
+isLanguageTranslationPairValid(string20 tempLanguage, string20 tempTranslation, char characterAfterLanguage, char characterAfterTranslation)
 {
     bool isValid = true;
-    if (characterAfterLanguage != '\n' || characterAfterTranslation != '\n')
+    if (characterAfterLanguage != '\n' || characterAfterTranslation != '\n' || strlen(tempLanguage) == 1 || strlen(tempTranslation) == 1)
     {
         printf(ERRORFORMATSTRING, "Input(s) invalid. Try again.\n");
         isValid = false;
@@ -195,7 +161,8 @@ isPairValid(string20 tempLanguage, string20 tempTranslation, char characterAfter
     return isValid;
 }
 
-void formatLanguageOrTranslation(string20 str)
+void 
+formatLanguageOrTranslation(string20 str)
 {
     int i;
     int lengthOfString = strlen(str);
@@ -212,9 +179,8 @@ void formatLanguageOrTranslation(string20 str)
     }
 }
 
-
 void
-addEntry(entry* E)
+addEntry(entry* e)
 {    
     string50 options[2] = {"Yes", "No"};
     string20 tempLanguage;
@@ -222,7 +188,7 @@ addEntry(entry* E)
     int addAnotherPair;
     char characterAfterLanguage = '\n';
     char characterAfterTranslation = '\n';
-    E->pairCount = 0;
+    e->pairCount = 0;
     
     do
     {
@@ -230,26 +196,46 @@ addEntry(entry* E)
         {
         getPair(tempLanguage, tempTranslation, &characterAfterLanguage, &characterAfterTranslation);
 
-        } while (!isPairValid(tempLanguage, tempTranslation, characterAfterLanguage, characterAfterTranslation));
+        } while (!isLanguageTranslationPairValid(tempLanguage, tempTranslation, 
+                              characterAfterLanguage, characterAfterTranslation));
 
         formatLanguageOrTranslation(tempLanguage);
         formatLanguageOrTranslation(tempTranslation);
-        strcpy(E->pairs[E->pairCount].language, tempLanguage);
-        strcpy(E->pairs[E->pairCount].translation, tempTranslation);
-        E->pairCount++;
-
-        printf("\n");
-        printf("Would you like to add another pair?\n");
-        printMenu(options, 2);
-        printf("Enter number that corresponds to chosen option: ");
-        addAnotherPair  = getAndValidateMenuInput(1, 2);
-    } while (addAnotherPair == 1 && E->pairCount < 10);
-    
-
-
-    
+        strcpy(e->pairs[e->pairCount].language, tempLanguage);
+        strcpy(e->pairs[e->pairCount].translation, tempTranslation);
+        e->pairCount++;
+        if (e->pairCount < 10)
+        {
+            printf("\n");
+            printf("Would you like to add another pair?\n");
+            printMenu(options, 2);
+            printf("Enter number that corresponds to chosen option: ");
+            addAnotherPair  = getAndValidateMenuInput(1, 2);
+        }
+    } while (addAnotherPair == 1 && e->pairCount < 10);   
 }
 
+void 
+sortEntryAlphabeticallyByLanguage(entry* e)
+{
+    int i; 
+    int j;
+    languageTranslationPair temp;
+
+    for (i = 0; i < e->pairCount - 1; i++)
+    {
+        for (j = 0; j < e->pairCount - 1 - i; j++)
+        {
+            if (strcmp(e->pairs[j].language,  e->pairs[j + 1].language) == 1)
+            {
+                temp = e->pairs[j];
+                e->pairs[j] = e->pairs[j + 1];
+                e->pairs[j + 1] = temp;
+            }
+        }
+    }
+
+}
 // TASK 2: Add translation
 
 /* TODO:
