@@ -207,6 +207,7 @@ addEntry(entry* e)
             strcpy(e->pairs[e->pairCount].language, tempLanguage);
             strcpy(e->pairs[e->pairCount].translation, tempTranslation);
             e->pairCount++;
+            sortEntryAlphabeticallyByLanguage(e);
         }
         else
         {
