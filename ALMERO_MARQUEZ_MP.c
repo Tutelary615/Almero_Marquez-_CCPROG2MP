@@ -211,7 +211,7 @@ addEntry(entry* e)
         }
         else
         {
-            printf(WARNINGFORMATSTRING, "The pair entered already exists in the entry\n");
+            printf(WARNINGFORMATSTRING, "The language-translation pair entered already exists in the entry\n");
         }
         if (e->pairCount < 10)
         {
