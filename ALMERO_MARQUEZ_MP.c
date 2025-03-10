@@ -261,6 +261,48 @@ addEntry(entry* e)
     }
 }
 
+void addLanguageTranslationPairToExistingEntry(entry entries[], int numberOfEntries)
+{   
+    string20 sourceLanguage;
+    string20 wordToTranslate;
+    int indexesOfEntriesWhereWordIsFound[MAXENTRIES];
+    char characterAfterLanguage = '\n';
+    char characterAfterTranslation = '\n';
+    int numberOfEntriesWhereSourceIsFound = 0;
+    int indexOfEntryToModify;
+    int i;
+
+    printf("Enter the language to translate from and the word you want to translate\n");
+    
+    do
+    {
+        clearString(sourceLanguage);
+        clearString(wordToTranslate);
+            
+        getPair(sourceLanguage, wordToTranslate, &characterAfterLanguage, &characterAfterTranslation);
+
+    } while (!isLanguageTranslationPairValid(sourceLanguage, wordToTranslate, characterAfterLanguage, characterAfterTranslation));
+
+    for (i = 0; i < numberOfEntries; i++)
+    {
+        if (searchForLanguageTranslationPair(entries[i], sourceLanguage, wordToTranslate) != -1)
+        {   
+            indexesOfEntriesWhereWordIsFound[numberOfEntriesWhereSourceIsFound] = i;
+            numberOfEntriesWhereSourceIsFound++;
+            printf("%d: ", numberOfEntriesWhereSourceIsFound);
+            printEntry(entries[i], stdout);
+            printf("\n");
+        }
+    }
+
+    printf("Enter the number corresponding to the entry you want to add a translation to\n");
+    indexOfEntryToModify = indexesOfEntriesWhereWordIsFound[getAndValidateMenuInput(1, numberOfEntriesWhereSourceIsFound) - 1];
+    printf("\n");
+    printf("Enter the language-translation pair to be added\n");
+    addLanguageTranslationPair(&entries[indexOfEntryToModify]);
+    printf(SUCCESSMESSAGEFORMATSTRING, "New translation pair successfully added to entry\n");
+}
+
 void 
 sortEntryAlphabeticallyByLanguage(entry* e)
 {
@@ -291,14 +333,16 @@ searchForLanguageTranslationPair(entry e, string20 languageKey, string20 transla
     int startIndex = 0;
     int endIndex = e.pairCount - 1;
 
-    while (strcmp(languageKey, e.pairs[startIndex].language) == 1)
+    while (strcmp(languageKey, e.pairs[startIndex].language) == 1 && startIndex < e.pairCount) 
     {
         startIndex++;
     }
-    while (strcmp(languageKey, e.pairs[endIndex].language) == -1)
+
+    while (strcmp(languageKey, e.pairs[endIndex].language) == -1 && endIndex > startIndex)
     {
         endIndex--;
     }
+    
     for (i = startIndex; i <= endIndex && indexOfKey == -1; i++)
     {
         if((strcmp(languageKey, e.pairs[i].language) == 0) && (strcmp(translationKey, e.pairs[i].translation) == 0))
@@ -306,6 +350,7 @@ searchForLanguageTranslationPair(entry e, string20 languageKey, string20 transla
             indexOfKey = i;
         }
     }
+
     return indexOfKey;
 }
 
