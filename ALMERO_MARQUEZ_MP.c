@@ -196,8 +196,6 @@ formatTranslation(string20 translation)
 
 }
 
-
-
 void
 addEntry(entry* e)
 {    
