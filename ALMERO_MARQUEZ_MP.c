@@ -218,8 +218,10 @@ addEntry(entry* e)
 
         } while (!isLanguageTranslationPairValid(tempLanguage, tempTranslation, 
                               characterAfterLanguage, characterAfterTranslation));
+        
         formatLanguage(tempLanguage);
         formatTranslation(tempTranslation);
+        
         printf("\n");
         if (searchForLanguageTranslationPair(*e, tempLanguage, tempTranslation) == -1)
         {
@@ -237,7 +239,7 @@ addEntry(entry* e)
             printf("Would you like to add another pair?\n");
             printMenu(options, 2);
             printf("Enter number that corresponds to chosen option: ");
-            addAnotherPair  = getAndValidateMenuInput(1, 2);
+            addAnotherPair = getAndValidateMenuInput(1, 2);
         }
     } while (addAnotherPair == 1 && e->pairCount < 10);   
 }
