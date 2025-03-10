@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <conio.h>
 #include "MP_HEADER.h"
 
 // CODING CONVENTIONS 
@@ -199,7 +200,6 @@ formatTranslation(string20 translation)
 void 
 addLanguageTranslationPair(entry* e)
 {
-    string50 options[2] = {"Yes", "No"};
     string20 tempLanguage;
     string20 tempTranslation;
     int addAnotherPair;
@@ -208,9 +208,7 @@ addLanguageTranslationPair(entry* e)
     bool doesPairAlreadyExist;
     e->pairCount = 0;
     
-    do
-    {
-        do
+        do 
         {
         getPair(tempLanguage, tempTranslation, &characterAfterLanguage, &characterAfterTranslation);
 
@@ -232,6 +230,19 @@ addLanguageTranslationPair(entry* e)
         {
             printf(WARNINGFORMATSTRING, "The language-translation pair entered already exists in the entry\n");
         }
+}
+
+void
+addEntry(entry* e)
+{ 
+    int addAnotherPair;
+    string50 options[2] = {"Yes", "No"};
+    e->pairCount = 0;
+
+    do
+    {
+        addLanguageTranslationPair(e);
+    
         if (e->pairCount < 10)
         {
             printf("Would you like to add another pair?\n");
@@ -239,13 +250,15 @@ addLanguageTranslationPair(entry* e)
             printf("Enter number that corresponds to chosen option: ");
             addAnotherPair = getAndValidateMenuInput(1, 2);
         }
-    } while (addAnotherPair == 1 && e->pairCount < 10);   
-}
+    } while (addAnotherPair == 1 && e->pairCount < MAXPAIRSPERENTRY);
 
-void
-addEntry(entry* e)
-{    
-      addLanguageTranslationPair(e);
+    if (e->pairCount == MAXPAIRSPERENTRY)
+    {
+        printf("The maximum of 10 translations per entry has been reached\n");
+        printf("Press any key to return to Manage Data menu\n");
+        getch();
+        fflush(stdin);
+    }
 }
 
 void 
