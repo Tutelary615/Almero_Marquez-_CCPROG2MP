@@ -1,6 +1,7 @@
 #define ERRORFORMATSTRING "\033[0;31m%s\033[0m"
-#define WARNINGFORMATSTRING "\033[0;33m%s\033[0m"
-#define SUCCESSMESSAGEFORMATSTRING "\033[0;32m%s\033[0m"
+#define YELLOWFORMATSTRING "\033[0;33m%s\033[0m"
+#define GREENFORMATSTRING "\033[0;32m%s\033[0m"
+#define PURPLEFORMATSTRING "\033[0;35m%s\033[0m"
 #define MAXENTRIES 150
 #define MAXPAIRSPERENTRY 10
 
@@ -33,3 +34,5 @@ void formatTranslation(string20 translation);
 void addEntry(entry* e);
 void sortEntryAlphabeticallyByLanguage(entry* e);
 int searchForLanguageTranslationPair(entry e, string20 languageKey, string20 translationKey);
+void printEntry(entry e, FILE* outputFile);
+void clearString(string20 str);
