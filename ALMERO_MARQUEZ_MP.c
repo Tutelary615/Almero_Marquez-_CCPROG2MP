@@ -196,9 +196,9 @@ formatTranslation(string20 translation)
 
 }
 
-void
-addEntry(entry* e)
-{    
+void 
+addLanguageTranslationPair(entry* e)
+{
     string50 options[2] = {"Yes", "No"};
     string20 tempLanguage;
     string20 tempTranslation;
@@ -240,6 +240,12 @@ addEntry(entry* e)
             addAnotherPair = getAndValidateMenuInput(1, 2);
         }
     } while (addAnotherPair == 1 && e->pairCount < 10);   
+}
+
+void
+addEntry(entry* e)
+{    
+      addLanguageTranslationPair(e);
 }
 
 void 
