@@ -243,11 +243,9 @@ addLanguageTranslationPair(entry* e)
             printf("Would you like to save change(s)?\n");
             if (e->pairCount == 0)
             {
-                printf("\t- ");
-                printf(PURPLEFORMATSTRING, "Create new entry\n");
+                printf("\t- create new entry");
             } 
-            printf("\t- ");
-            printf("\033[0;35mAdd translation: %s (%s)\033[0m\n", tempTranslation, tempLanguage);
+            printf("\t- Add translation: %s (%s)\n");
             isSavedConfirmed = isOperationConfirmed();
 
             if (isSavedConfirmed)
@@ -281,7 +279,7 @@ addEntry(entry* e)
     {
         addLanguageTranslationPair(e);
     
-        if (e->pairCount < 10)
+        if (e->pairCount < MAXPAIRSPERENTRY)
         {
             printf("Would you like to add another pair?\n");
             addAnotherPair = isOperationConfirmed();
@@ -291,11 +289,10 @@ addEntry(entry* e)
     if (e->pairCount == MAXPAIRSPERENTRY)
     {
         printf("The maximum of 10 translations per entry has been reached\n");
+        printf("Press any key to return to Manage Data menu\n");
+        getch();
+        fflush(stdin);
     }
-    
-    printf("Press any key to return to Manage Data menu\n");
-    getch();
-    fflush(stdin);
 }
 
 int 
