@@ -297,7 +297,8 @@ addEntry(entry* e)
     }
 }
 
-int findIndexsWhereSourceIsFound(entry entries[], string20 sourceLanguage, string20 wordToTranslate, int indexesWhereEntriesAreFound[])
+int 
+findIndexsWhereSourceIsFound(entry entries[], string20 sourceLanguage, string20 wordToTranslate, int indexesWhereEntriesAreFound[])
 {
     int numberOfEntriesWhereSourceIsFound = 0;
     int i;
@@ -313,7 +314,8 @@ int findIndexsWhereSourceIsFound(entry entries[], string20 sourceLanguage, strin
     return numberOfEntriesWhereSourceIsFound;
 }
 
-void addLanguageTranslationPairToExistingEntry(entry entries[], int numberOfEntries)
+void 
+addLanguageTranslationPairToExistingEntry(entry entries[], int numberOfEntries)
 {   
     string20 sourceLanguage;
     string20 wordToTranslate;
