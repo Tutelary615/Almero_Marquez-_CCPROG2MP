@@ -139,7 +139,8 @@ manageDataMenu(int entryCount)
     return choice;
 }
 
-bool isOperationConfirmed()
+bool 
+isOperationConfirmed()
 {
     int choice;
     printf("Enter the number corresponding to your choice\n");
@@ -173,7 +174,7 @@ bool
 isLanguageTranslationPairValid(string20 tempLanguage, string20 tempTranslation, char characterAfterLanguage, char characterAfterTranslation)
 {
     bool isValid = true;
-    if (characterAfterLanguage != '\n' || characterAfterTranslation != '\n' || strlen(tempLanguage) == 1 || strlen(tempTranslation) == 1)
+    if (characterAfterLanguage != '\n' || characterAfterTranslation != '\n' || strlen(tempLanguage) == 0 || strlen(tempTranslation) == 0)
     {
         printf(ERRORFORMATSTRING, "Input(s) invalid. Try again.\n");
         isValid = false;
@@ -225,8 +226,6 @@ addLanguageTranslationPair(entry* e)
     char characterAfterLanguage = '\n';
     char characterAfterTranslation = '\n';
     bool isSavedConfirmed;
-    bool doesPairAlreadyExist;
-    e->pairCount = 0;
     
         do 
         {
@@ -244,11 +243,11 @@ addLanguageTranslationPair(entry* e)
             printf("Would you like to save change(s)?\n");
             if (e->pairCount == 0)
             {
-                printf("- ");
+                printf("\t- ");
                 printf(PURPLEFORMATSTRING, "Create new entry\n");
             } 
-            printf("- ");
-            printf("\033[0;35m%s (%s)\033[0m\n", tempTranslation, tempLanguage);
+            printf("\t- ");
+            printf("\033[0;35mAdd translation: %s (%s)\033[0m\n", tempTranslation, tempLanguage);
             isSavedConfirmed = isOperationConfirmed();
 
             if (isSavedConfirmed)
@@ -277,7 +276,7 @@ addEntry(entry* e)
 { 
     bool addAnotherPair;
     e->pairCount = 0;
-
+    
     do
     {
         addLanguageTranslationPair(e);
@@ -298,14 +297,30 @@ addEntry(entry* e)
     }
 }
 
+int findIndexsWhereSourceIsFound(entry entries[], string20 sourceLanguage, string20 wordToTranslate, int indexesWhereEntriesAreFound[])
+{
+    int numberOfEntriesWhereSourceIsFound = 0;
+    int i;
+
+    for (i = 0; i < MAXENTRIES; i++)
+    {
+        if (searchForLanguageTranslationPair(entries[i], sourceLanguage, wordToTranslate) != -1)
+        {
+            indexesWhereEntriesAreFound[numberOfEntriesWhereSourceIsFound] = i;
+            numberOfEntriesWhereSourceIsFound++;
+        }
+    }
+    return numberOfEntriesWhereSourceIsFound;
+}
+
 void addLanguageTranslationPairToExistingEntry(entry entries[], int numberOfEntries)
 {   
     string20 sourceLanguage;
     string20 wordToTranslate;
     int indexesOfEntriesWhereWordIsFound[MAXENTRIES];
+    int numberOfEntriesWhereSourceIsFound;
     char characterAfterLanguage = '\n';
     char characterAfterTranslation = '\n';
-    int numberOfEntriesWhereSourceIsFound = 0;
     int indexOfEntryToModify;
     int i;
 
@@ -320,24 +335,13 @@ void addLanguageTranslationPairToExistingEntry(entry entries[], int numberOfEntr
 
     } while (!isLanguageTranslationPairValid(sourceLanguage, wordToTranslate, characterAfterLanguage, characterAfterTranslation));
 
-    for (i = 0; i < numberOfEntries; i++)
-    {
-        if (searchForLanguageTranslationPair(entries[i], sourceLanguage, wordToTranslate) != -1)
-        {   
-            indexesOfEntriesWhereWordIsFound[numberOfEntriesWhereSourceIsFound] = i;
-            numberOfEntriesWhereSourceIsFound++;
-            printf("%d: ", numberOfEntriesWhereSourceIsFound);
-            printEntry(entries[i], stdout);
-            printf("\n");
-        }
-    }
+    numberOfEntriesWhereSourceIsFound =  findIndexsWhereSourceIsFound(entries, sourceLanguage, wordToTranslate, indexesOfEntriesWhereWordIsFound);
 
     printf("Enter the number corresponding to the entry you want to add a translation to\n");
     indexOfEntryToModify = indexesOfEntriesWhereWordIsFound[getAndValidateMenuInput(1, numberOfEntriesWhereSourceIsFound) - 1];
     printf("\n");
     printf("Enter the language-translation pair to be added\n");
     addLanguageTranslationPair(&entries[indexOfEntryToModify]);
-    printf(GREENFORMATSTRING, "New translation pair successfully added to entry\n");
 }
 
 void 
