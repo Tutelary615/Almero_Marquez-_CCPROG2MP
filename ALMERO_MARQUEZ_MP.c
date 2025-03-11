@@ -291,10 +291,11 @@ addEntry(entry* e)
     if (e->pairCount == MAXPAIRSPERENTRY)
     {
         printf("The maximum of 10 translations per entry has been reached\n");
-        printf("Press any key to return to Manage Data menu\n");
-        getch();
-        fflush(stdin);
     }
+    
+    printf("Press any key to return to Manage Data menu\n");
+    getch();
+    fflush(stdin);
 }
 
 int 
