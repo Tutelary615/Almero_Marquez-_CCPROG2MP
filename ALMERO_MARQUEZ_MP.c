@@ -68,7 +68,7 @@ isMenuInputValid(bool isInputValid, int lowerBound, int upperBound, int input)
 
 	if (!isInputValid || input < lowerBound || input > upperBound)
 	{
-		printf(ERRORFORMATSTRING, "Entered number is invalid, try again\n");
+		printf(REDFORMATSTRING, "Entered number is invalid, try again\n");
 		isValid = false;
 	}
 		
@@ -176,7 +176,7 @@ isLanguageTranslationPairValid(string20 tempLanguage, string20 tempTranslation, 
     bool isValid = true;
     if (characterAfterLanguage != '\n' || characterAfterTranslation != '\n' || strlen(tempLanguage) == 0 || strlen(tempTranslation) == 0)
     {
-        printf(ERRORFORMATSTRING, "Input(s) invalid. Try again.\n");
+        printf(REDFORMATSTRING, "Input(s) invalid. Try again.\n");
         isValid = false;
     }
     return isValid;
@@ -405,6 +405,83 @@ printEntry(entry e, FILE* outputFile)
     }
 }
 
+
+
+void 
+printEntriesToFile(entry entries[], int numberOfEntries, FILE* filename)
+{
+    int i;
+    int j;
+
+    for (i = 0; i < numberOfEntries; i++)
+    {
+        for (j = 0; j < entries[i].pairCount; i++)
+        {
+            fprintf(filename, "%s: %s\n", entries[i].pairs[j].language, entries[i].pairs[j].translation);
+        }
+        fprintf(filename, "\n");
+    }
+    fprintf(filename, "%c", EOF);
+}
+
+void
+formatFilename(string30 filename)
+{   
+    int lengthOfString = strlen(filename);
+    
+    if (lengthOfString < 30)
+    {
+        filename[lengthOfString - 1] = '\0';
+    }
+}
+
+bool
+isFilenameValid(string30 filename, char characterAfterFilename)
+{
+    bool isValid = true;
+    string20 fileExtension;
+    
+    if (strlen(filename) == 0)
+    {
+        isValid = false;
+        printf("1 - %d\n", isValid);
+    }
+    else if (characterAfterFilename != '\n')
+    {
+        isValid = false;
+        printf("2 - %d\n", isValid);
+    }
+    strtok(filename, ".");
+    strcpy(fileExtension, strtok(NULL, "."));
+    if (strcmp(fileExtension, "txt") != 0)
+    {
+        isValid = false;
+    }
+    return isValid;
+}
+
+void exportData(entry entries[], int numberOfEntries)
+{
+    string30 filename;
+    char characterAfterFilename = '\n';
+
+    do
+    {
+        printf("Enter filename (filename must end in \".txt\"): ");
+        fgets(filename, 31, stdin); 
+        formatFilename(filename);
+
+        if (strlen(filename) == 30)
+        {
+            characterAfterFilename = getc(stdin);
+        }
+        fflush(stdin);
+        printf("%s\n", filename);
+    } while (!isFilenameValid(filename, characterAfterFilename));
+    
+    
+
+}
 
 // TASK 3: Delete entry
 
