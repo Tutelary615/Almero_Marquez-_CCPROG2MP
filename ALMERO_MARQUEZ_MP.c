@@ -397,7 +397,8 @@ searchForLanguageTranslationPair(entry e, string20 languageKey, string20 transla
     return indexOfKey;
 }
 
-void printEntry(entry e, FILE* outputFile)
+void 
+printEntry(entry e, FILE* outputFile)
 {
     int i;
     for (i = 0; i < e.pairCount; i++)
@@ -406,51 +407,6 @@ void printEntry(entry e, FILE* outputFile)
     }
 }
 
-// TASK 2: Add translation
-
-/* TODO:
-    - ask user for language translation pair 
-        if pair already exists 
-            if pair exists in more than 1 entry
-                - ask where new language translation pair will be added (int input)
-        
-        if language translation pair count < 10:
-            - get new language translation pair
-            - validate input
-
-                    If valid:
-                        -  ask user to confirm
-                        - if confirmed: add translation
-                        - else: ask user if he would like to make another input or abort
-                    else:
-                        - display error message
-                        -  ask user if he would like to make another input or abort
-                
-                        if abort: 
-                            - ask user if he would like add another translation to same entry
-                            if add: ask for input 
-                            else: return to menu
-
-                
-                else if translation already exists for specified language:
-                    - ask user if he would like to replace existing translation
-
-                    if replace: replace translation
-
-                else: 
-                     - incrament pair count
-                     - ask user if he would like add another translation to same entry
-                        if add: ask for input 
-                        else: return to menu
-
-
-
-        else:
-            - display error message (and recommendation to delete translation pair)
-            - return to menu
-
-       
-*/
 
 // TASK 3: Delete entry
 
