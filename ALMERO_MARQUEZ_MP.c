@@ -27,8 +27,16 @@
     language and translation strings: max 20 characters
     language-translation pair: max 10 per entry 
 */
-
-void clearString(string20 str)
+void 
+printStringAscii(char str[])
+{
+    for (int i = 0; i < strlen(str); i++)
+    {
+        printf("%d_", str[i]);
+    }
+    printf("\n");
+}
+void clearString(char str[])
 {
     int i;
     for (i = 0; i < strlen(str); i++)
@@ -415,13 +423,12 @@ printEntriesToFile(entry entries[], int numberOfEntries, FILE* filename)
 
     for (i = 0; i < numberOfEntries; i++)
     {
-        for (j = 0; j < entries[i].pairCount; i++)
+        for (j = 0; j < entries[i].pairCount; j++)
         {
             fprintf(filename, "%s: %s\n", entries[i].pairs[j].language, entries[i].pairs[j].translation);
         }
         fprintf(filename, "\n");
     }
-    fprintf(filename, "%c", EOF);
 }
 
 void
@@ -436,51 +443,109 @@ formatFilename(string30 filename)
 }
 
 bool
+isThereProhibitedCharacterInFilename(string30 filename)
+{
+    bool isThereProhibitedCharacter = false;
+    char prohibitedCharacters[9] = {'<', '>', ':', '"', '/', '\\', '|', '?', '*'};
+    int i;
+    int j;
+
+    for (i = 0; i < strlen(filename) && !isThereProhibitedCharacter; i++)
+    {
+        for (j = 0; j < 9 && !isThereProhibitedCharacter; j++)
+        {
+            if (filename[i] == prohibitedCharacters[j])
+            {
+                isThereProhibitedCharacter = true;
+            }
+        }
+    }
+    return isThereProhibitedCharacter;
+}
+
+bool
 isFilenameValid(string30 filename, char characterAfterFilename)
 {
     bool isValid = true;
-    string20 fileExtension;
-    
     if (strlen(filename) == 0)
     {
+        printf(REDFORMATSTRING, "No filename was entered\n");
         isValid = false;
-        printf("1 - %d\n", isValid);
     }
     else if (characterAfterFilename != '\n')
     {
+        printf(REDFORMATSTRING, "File name entered contains more than 30 characters\n");
         isValid = false;
-        printf("2 - %d\n", isValid);
     }
-    strtok(filename, ".");
-    strcpy(fileExtension, strtok(NULL, "."));
-    if (strcmp(fileExtension, "txt") != 0)
+    else if (isThereProhibitedCharacterInFilename(filename))
     {
+        printf(REDFORMATSTRING, "Filename entered contains prohibited character(s)\n");
         isValid = false;
     }
+    else if (strcmp(filename, ".txt") == 0) 
+    {
+        printf(REDFORMATSTRING, "There must be at least one character before the \".txt\" extension\n");
+        isValid = false;
+    }
+    else if (strcmp((filename + strlen(filename) - 4), ".txt") != 0)
+    {
+        printf(REDFORMATSTRING, "Filename must end in \".txt\"\n");
+        isValid = false;
+    }
+    
     return isValid;
+}
+
+void 
+getFilename(string30 filename, char* characterAfterFilename)
+{
+    printf("Enter filename: ");
+    fgets(filename, 31, stdin); 
+    //formatFilename(filename);
+
+    if (strlen(filename) == 30)
+    {
+        *characterAfterFilename = getc(stdin);
+    }
+    fflush(stdin);
 }
 
 void exportData(entry entries[], int numberOfEntries)
 {
+    FILE* exportFile;
     string30 filename;
-    char characterAfterFilename = '\n';
+    char characterAfterFilename;
 
+    printf("Provide filename of file where data will be exported to\n");
+    printf(" - the file name must end in \".txt\"\n");
+    printf(" - There must be at least 1 character before the \".txt\" extension\n");
+    printf(" - the file name must not exceed 30 characters (including file extension)\n");
+    printf("\n");
     do
     {
-        printf("Enter filename (filename must end in \".txt\"): ");
-        fgets(filename, 31, stdin); 
+        characterAfterFilename = '\n';
+        clearString(filename);
+        getFilename(filename, &characterAfterFilename);
         formatFilename(filename);
-
-        if (strlen(filename) == 30)
-        {
-            characterAfterFilename = getc(stdin);
-        }
-        fflush(stdin);
-        printf("%s\n", filename);
     } while (!isFilenameValid(filename, characterAfterFilename));
-    
-    
 
+    printf("\n");
+    printf("Would you like to proceed with export?\n");
+
+    if (isOperationConfirmed())
+    {
+        exportFile = fopen(filename, "w");
+        printEntriesToFile(entries, numberOfEntries, exportFile);
+        fclose(exportFile);
+        printf(GREENFORMATSTRING, "Data Successfully exported to ");
+        printf(GREENFORMATSTRING, filename);
+        printf("\n");
+    }
+    else
+    {
+        printf(REDFORMATSTRING, "Export cancelled\n");
+    }
+    
 }
 
 // TASK 3: Delete entry
