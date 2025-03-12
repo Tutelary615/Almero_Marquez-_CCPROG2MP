@@ -36,7 +36,7 @@ printStringAscii(char str[])
     }
     printf("\n");
 }
-void clearString(char str[])
+void initString(char str[])
 {
     int i;
     for (i = 0; i < strlen(str); i++)
@@ -157,6 +157,7 @@ isOperationConfirmed()
     choice = getAndValidateMenuInput(1, 2);
     return (choice == 1);
 }
+
 void
 getPair(string20 tempLanguage, string20 tempTranslation, char* characterAfterLanguage, char* characterAfterTranslation)
 {
@@ -335,8 +336,8 @@ addLanguageTranslationPairToExistingEntry(entry entries[], int numberOfEntries)
     
     do
     {
-        clearString(sourceLanguage);
-        clearString(wordToTranslate);
+        initString(sourceLanguage);
+        initString(wordToTranslate);
             
         getPair(sourceLanguage, wordToTranslate, &characterAfterLanguage, &characterAfterTranslation);
 
@@ -524,7 +525,7 @@ void exportData(entry entries[], int numberOfEntries)
     do
     {
         characterAfterFilename = '\n';
-        clearString(filename);
+        initString(filename);
         getFilename(filename, &characterAfterFilename);
         formatFilename(filename);
     } while (!isFilenameValid(filename, characterAfterFilename));
@@ -537,13 +538,89 @@ void exportData(entry entries[], int numberOfEntries)
         exportFile = fopen(filename, "w");
         printEntriesToFile(entries, numberOfEntries, exportFile);
         fclose(exportFile);
-        printf(GREENFORMATSTRING, "Data Successfully exported to ");
+        printf(GREENFORMATSTRING, "Data successfully exported to ");
         printf(GREENFORMATSTRING, filename);
         printf("\n");
     }
     else
     {
         printf(YELLOWFORMATSTRING, "Export cancelled\n");
+    }
+    
+}
+
+bool
+isImportFilenameValid(string30 filename, char characterAfterFilename, FILE* importFile)
+{
+    bool isValid = true;
+    if (strlen(filename) == 0)
+    {
+        printf(REDFORMATSTRING, "No filename was entered. Try again\n");
+        isValid = false;
+    }
+    else if (characterAfterFilename != '\n')
+    {
+        printf(REDFORMATSTRING, "File name entered contains more than 30 characters. Try again\n");
+        isValid = false;
+    }
+    else if (isThereProhibitedCharacterInFilename(filename))
+    {
+        printf(REDFORMATSTRING, "File name entered is not valid. Try again\n");
+        isValid = false;
+    }
+    else if (strcmp(filename, ".txt") == 0) 
+    {
+        printf(REDFORMATSTRING, "File name entered is not valid. Try again\n");
+        isValid = false;
+    }
+    else if (strcmp((filename + strlen(filename) - 4), ".txt") != 0)
+    {
+        printf(REDFORMATSTRING, "\".txt\" extension was not included in input. Try again\n");
+        isValid = false;
+    }
+    else if (importFile == NULL)
+    {
+        printf(REDFORMATSTRING, "File not found. Try again\n");
+        isValid = false;   
+    }
+    
+    return isValid;
+}
+
+void
+importData()
+{
+    FILE* importFile;
+    string30 filename;
+    char characterAfterFilename;
+    printf("provide the file name of the text file (.txt) to import from\n");
+    printf(" - include the \".txt\" file extension in input\n");
+    printf(" - file name should not exceed 30 characters (including file extesion)\n");
+    printf("\n");
+   
+    do
+    {
+        initString(filename);
+        characterAfterFilename = '\n';
+        printf("Enter file name: ");
+        getFilename(filename, &characterAfterFilename);
+        formatFilename(filename);
+        importFile = fopen(filename, "r");
+    } while (!isImportFilenameValid(filename, characterAfterFilename, importFile));
+    printf("\n");
+    
+    printf("Would you like to proceed with import\n");
+    if (isOperationConfirmed())
+    {
+
+    }
+    else 
+    {
+        fclose(importFile);
+        printf(YELLOWFORMATSTRING, "import cancelled\n");
+        printf("Press any key to return to manage data menu\n");
+        getch();
+        fflush(stdin);
     }
     
 }
