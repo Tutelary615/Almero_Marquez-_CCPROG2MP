@@ -254,9 +254,8 @@ addLanguageTranslationPair(entry* e)
                 printf("\t- create new entry");
             } 
             printf("\t- Add translation: %s (%s)\n");
-            isSavedConfirmed = isOperationConfirmed();
-
-            if (isSavedConfirmed)
+            
+            if (isOperationConfirmed())        
             {
                 strcpy(e->pairs[e->pairCount].language, tempLanguage);
                 strcpy(e->pairs[e->pairCount].translation, tempTranslation);
@@ -402,18 +401,6 @@ searchForLanguageTranslationPair(entry e, string20 languageKey, string20 transla
 
     return indexOfKey;
 }
-
-void 
-printEntry(entry e, FILE* outputFile)
-{
-    int i;
-    for (i = 0; i < e.pairCount; i++)
-    {
-        fprintf(outputFile, "%s: %s\n", e.pairs[i].language, e.pairs[i].translation);
-    }
-}
-
-
 
 void 
 printEntriesToFile(entry entries[], int numberOfEntries, FILE* filename)
