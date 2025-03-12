@@ -509,16 +509,16 @@ void exportData(entry entries[], int numberOfEntries)
     printf(" - The following characters are not allowed to be used in the file name:\n");
     
     printf("\n");
-    printf(" - < (less than)\n");
-    printf(" - > (greater than)\n");
-    printf(" - : (colon)\n");
-    printf(" - \" (double quote)\n");
-    printf(" - ' (single quote)\n");
-    printf(" - \\ (forward slash)\n");
-    printf(" - / (back slash)\n");
-    printf(" - | (vertical bar)\n");
-    printf(" - ? (question mark)\n");
-    printf(" - * (asterisk)\n");
+    printf("   - < (less than)\n");
+    printf("   - > (greater than)\n");
+    printf("   - : (colon)\n");
+    printf("   - \" (double quote)\n");
+    printf("   - ' (single quote)\n");
+    printf("   - \\ (forward slash)\n");
+    printf("   - / (back slash)\n");
+    printf("   - | (vertical bar)\n");
+    printf("   - ? (question mark)\n");
+    printf("   - * (asterisk)\n");
     
 
     printf("\n");
