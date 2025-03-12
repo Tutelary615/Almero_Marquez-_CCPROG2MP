@@ -501,8 +501,6 @@ getFilename(string30 filename, char* characterAfterFilename)
 {
     printf("Enter filename: ");
     fgets(filename, 31, stdin); 
-    //formatFilename(filename);
-
     if (strlen(filename) == 30)
     {
         *characterAfterFilename = getc(stdin);
@@ -520,6 +518,21 @@ void exportData(entry entries[], int numberOfEntries)
     printf(" - the file name must end in \".txt\"\n");
     printf(" - There must be at least 1 character before the \".txt\" extension\n");
     printf(" - the file name must not exceed 30 characters (including file extension)\n");
+    printf(" - The following characters are not allowed to be used in the file name:\n");
+    
+    printf("\n");
+    printf(" - < (less than)\n");
+    printf(" - > (greater than)\n");
+    printf(" - : (colon)\n");
+    printf(" - \" (double quote)\n");
+    printf(" - ' (single quote)\n");
+    printf(" - \\ (forward slash)\n");
+    printf(" - / (back slash)\n");
+    printf(" - | (vertical bar)\n");
+    printf(" - ? (question mark)\n");
+    printf(" - * (asterisk)\n");
+    
+
     printf("\n");
     do
     {
@@ -543,7 +556,7 @@ void exportData(entry entries[], int numberOfEntries)
     }
     else
     {
-        printf(REDFORMATSTRING, "Export cancelled\n");
+        printf(YELLOWFORMATSTRING, "Export cancelled\n");
     }
     
 }
